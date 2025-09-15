@@ -84,10 +84,14 @@ summary(activity)
      newstepmedian <- median(newstep$steps)
      
      #plot
-     ggplot(data = newstep) + geom_point(mapping= aes(x = date, y = steps)) +
-       labs(title = "Total Steps per Day from Watch Data") +
-       xlab("Date") +
-       ylab("Total Steps per Day")
+     ggplot(data = newstep, aes(x = steps)) + geom_histogram() +
+       labs(title = "Distribution of Total Steps per Day from Watch Data") +
+       xlab("Total Steps per Day") +
+       ylab("Frequency of step count")
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
 ```
 
 ![](PA1_template_files/figure-html/stepsperday-1.png)<!-- -->
