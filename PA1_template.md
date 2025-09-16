@@ -97,18 +97,14 @@ summary(activity)
 
 ![](PA1_template_files/figure-html/stepsperday-1.png)<!-- -->
 
-``` r
-     #need to fix x-axis
-```
-
 Participants walk an average of 10766.1887 daily.
 
 The median number of steps participants take daily is 10765.
 
 
 ## What is the average daily activity pattern?
-A time-series plot (type = "l") of the five minute interval (x-axis) and the average number of steps taken averaged across all days (y-axis).
-Demonstrate which interval, on average across all days in the dataset, contains the maximum number of steps.
+
+
 
 
 ``` r

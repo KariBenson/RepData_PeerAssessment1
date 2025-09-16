@@ -51,7 +51,6 @@ summary(activity)
        xlab("Total Steps per Day") +
        ylab("Frequency of step count")
        
-     #need to fix x-axis
 ```
 
 Participants walk an average of `r newstepmean` daily.
@@ -60,8 +59,8 @@ The median number of steps participants take daily is `r newstepmedian`.
 
 
 ## What is the average daily activity pattern?
-A time-series plot (type = "l") of the five minute interval (x-axis) and the average number of steps taken averaged across all days (y-axis).
-Demonstrate which interval, on average across all days in the dataset, contains the maximum number of steps.
+
+
 
 ```{r steppattern}
   #sum step data by day
