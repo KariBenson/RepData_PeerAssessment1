@@ -7,6 +7,7 @@ output:
 
 Loading Libraries and changing default
 
+
 ``` r
  # This accounts for a limitation in RStudio
   options("max.print" = 9999999)
@@ -79,12 +80,12 @@ summary(activity)
   #remove NA
   stepdata <- activity[!is.na(activity$steps),]
   #sum step data by day
-     newstep <- aggregate(steps ~ date, data = stepdata, sum)
-     newstepmean <- sprintf("%.4f",mean(newstep$steps))
-     newstepmedian <- median(newstep$steps)
+     newstepday <- aggregate(steps ~ date, data = stepdata, sum)
+     newstepmean <- sprintf("%.4f",mean(newstepday$steps))
+     newstepmedian <- median(newstepday$steps)
      
      #plot
-     ggplot(data = newstep, aes(x = steps)) + geom_histogram() +
+     ggplot(data = newstepday, aes(x = steps)) + geom_histogram() +
        labs(title = "Distribution of Total Steps per Day from Watch Data") +
        xlab("Total Steps per Day") +
        ylab("Frequency of step count")
@@ -111,28 +112,95 @@ Demonstrate which interval, on average across all days in the dataset, contains 
 
 
 ``` r
-  #load data into function
-  activity <- read.csv("~\\R\\datasciencecoursera\\RepData_PeerAssessment1\\activity.csv")
-  #remove NA
-  stepdata <- activity[!is.na(activity$steps),]
   #sum step data by day
-  newstep <- aggregate(steps ~ interval, data = stepdata, mean)
-  maxsteps <- newstep$interval[newstep$steps == max(newstep$steps)]
+  meanstepinterval <- aggregate(steps ~ interval, data = stepdata, mean)
+ 
+  maxsteps <- meanstepinterval$interval[meanstepinterval$steps == max(meanstepinterval$steps)]
   
-  #plot
-  ggplot(data = newstep) + geom_point(mapping= aes(x = interval, y = steps)) +
+#  plot(meanstepinterval$interval,meanstepinterval$steps, type = "l", main = "Average Steps per Interval Through Day", 
+##     xlab = "Interval", ylab = "Average Step Count")
+#  abline(v = maxsteps, col = "red", lty = 4)
+  ggplot(data = meanstepinterval) + geom_line(mapping= aes(x = interval, y = steps)) +
     labs(title = "Average Steps per Interval from Watch Data") +
     xlab("Time Interval") +
-    ylab("Average Steps per Interval")
+    ylab("Average Steps per Interval") +
+    geom_vline(mapping = aes(xintercept = maxsteps), col = "red")
 ```
 
 ![](PA1_template_files/figure-html/steppattern-1.png)<!-- -->
   
-  The time interval where the participant mean step count is the highest is 835.
+ 
+  The time interval where the participant mean step count is the highest is 835, denoted by the $\color{red}{\text{red}}$ line.
 
 
 ## Imputing missing values
 
+``` r
+#calculate number of missing values
+  missing_steps <- sum(is.na(activity$steps))
 
+# calculate mean steps for each interval
+  meanstepsperinterval <- activity %>%
+    group_by(interval) %>%
+   summarize(meansteps = mean(steps, na.rm = TRUE))
+ 
+
+  #impute missing data
+  imputesteps <- activity %>%
+    left_join(meanstepsperinterval, by = "interval") %>%
+    mutate(steps = ifelse(is.na(steps),meansteps, steps)) %>%
+    select(-meansteps)
+  
+  #calculate totals after imputing data  
+  totalstepsall <- imputesteps %>%
+      group_by(date) %>%
+      summarize(totalsteps = sum(steps))
+                 
+  
+  # histogram of imputed data
+       ggplot(data = totalstepsall, aes(x = totalsteps)) + geom_histogram() +
+         labs(title = "Distribution of Total Steps per Day from Watch Data after Imputation") +
+         xlab("Total Steps per Day") +
+         ylab("Frequency of step count")
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value `binwidth`.
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
+There were 2304 missing values in this data set.
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+
+``` r
+ # create a new variable for type of day
+  imputesteps$daytype <- ifelse(weekdays(as.Date(imputesteps$date)) %in% c("Saturday", "Sunday"), "weekend", "weekday")
+ # calculate steps for intervals grouped by daytype and interval
+  avedaysteps <- imputesteps %>%
+      group_by(interval, daytype) %>%
+        summarize(meansteps = mean(steps))
+```
+
+```
+## `summarise()` has grouped output by 'interval'. You can override using the
+## `.groups` argument.
+```
+
+``` r
+  # create the plot
+  ggplot(avedaysteps, aes(x = interval, y = meansteps, color = daytype)) +
+      geom_line() +
+      facet_wrap(~daytype, ncol = 1) +
+      labs(title = "Average Activity Patterns Comparing Weekend and Weekday", x = "five-minute intervals",
+           y = "Average Steps") 
+```
+
+![](PA1_template_files/figure-html/partofweek-1.png)<!-- -->
+
+It appears as though the participants are more active across more of the day during weekends than on weekdays.
+
+
+ 
