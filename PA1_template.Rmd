@@ -50,7 +50,7 @@ summary(activity)
        labs(title = "Distribution of Total Steps per Day from Watch Data") +
        xlab("Total Steps per Day") +
        ylab("Frequency of step count")
-       dev.copy(png,file="plot1.png")
+       
        
 ```
 
@@ -78,7 +78,7 @@ The median number of steps participants take daily is `r newstepmedian`.
     ylab("Average Steps per Interval") +
     geom_vline(mapping = aes(xintercept = maxsteps), col = "red")
     
-  dev.copy(png,file="plot2.png")
+  
    
 ```
   
@@ -116,8 +116,7 @@ The median number of steps participants take daily is `r newstepmedian`.
          xlab("Total Steps per Day") +
          ylab("Frequency of step count")
     
-  dev.copy(png,file="plot3.png")
-
+  
 
 ```
 
@@ -140,7 +139,7 @@ There were `r missing_steps` missing values in this data set.
       labs(title = "Average Activity Patterns Comparing Weekend and Weekday", x = "five-minute intervals",
            y = "Average Steps") 
   
-  dev.copy(png,file="plot4.png")
+ 
 
 ```
 

@@ -97,15 +97,6 @@ summary(activity)
 
 ![](PA1_template_files/figure-html/stepsperday-1.png)<!-- -->
 
-``` r
-       dev.copy(png,file="plot1.png")
-```
-
-```
-## png 
-##   3
-```
-
 Participants walk an average of 10766.1887 daily.
 
 The median number of steps participants take daily is 10765.
@@ -133,15 +124,6 @@ The median number of steps participants take daily is 10765.
 ```
 
 ![](PA1_template_files/figure-html/steppattern-1.png)<!-- -->
-
-``` r
-  dev.copy(png,file="plot2.png")
-```
-
-```
-## png 
-##   4
-```
   
  
   The time interval where the participant mean step count is the highest is 835, denoted by the $\color{red}{\text{red}}$ line.
@@ -184,15 +166,6 @@ The median number of steps participants take daily is 10765.
 
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
-``` r
-  dev.copy(png,file="plot3.png")
-```
-
-```
-## png 
-##   5
-```
-
 There were 2304 missing values in this data set.
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -222,15 +195,6 @@ There were 2304 missing values in this data set.
 ```
 
 ![](PA1_template_files/figure-html/partofweek-1.png)<!-- -->
-
-``` r
-  dev.copy(png,file="plot4.png")
-```
-
-```
-## png 
-##   6
-```
 
 It appears as though the participants are more active across more of the day during weekends than on weekdays.
 
